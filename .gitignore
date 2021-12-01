@@ -10,6 +10,7 @@
 
 ### the rest ###
 
+.env
 .eslintcache
 dist
 node_modules

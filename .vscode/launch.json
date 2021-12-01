@@ -2,18 +2,15 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "Debug with esbuild-runner",
-      "program": "${workspaceFolder}/src/index.ts",
-      "runtimeArgs": [
-        "-r",
-        "esbuild-runner/register"
-      ],
+      "name": "Debug with esbuild-node-loader",
+      "type": "node",
       "request": "launch",
-      "sourceMaps": true,
-      "skipFiles": [
-        "<node_internals>/**"
-      ],
-      "type": "pwa-node"
+      "runtimeExecutable": "node",
+      "runtimeArgs": ["--experimental-loader", "esbuild-node-loader"],
+      "args": ["src/app.ts"],
+      "cwd": "${workspaceRoot}",
+      "internalConsoleOptions": "openOnSessionStart",
+      "skipFiles": ["<node_internals>/**", "node_modules/**"]
     }
   ]
 }

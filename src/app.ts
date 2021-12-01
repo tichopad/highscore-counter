@@ -1,11 +1,29 @@
 import createServer from 'fastify'
+import env from 'fastify-env'
+import sensible from 'fastify-sensible'
+import underPressure from 'under-pressure'
+import { envSchema } from './global'
+import * as routes from './routes'
 
-const server = createServer()
+const app = createServer({ logger: true })
 
-server.get('/', {
-  handler: async (request, reply) => {
-    return reply.code(200).send()
-  }
-})
+const registeredRoutes = Object.values(routes).map((routeFunction) => app.register(routeFunction))
+const registeredPlugins = [
+  app.register(env, {
+    dotenv: true,
+    schema: envSchema
+  }),
+  app.register(sensible),
+  app.register(underPressure, {
+    maxEventLoopDelay: 1000,
+    maxHeapUsedBytes: 100000000,
+    maxRssBytes: 100000000,
+    maxEventLoopUtilization: 0.98
+  })
+]
 
-await server.listen(3000)
+await Promise.all([...registeredPlugins, ...registeredRoutes])
+
+app.get('/', async () => 'hello')
+
+await app.listen(process.env.SERVER_PORT)

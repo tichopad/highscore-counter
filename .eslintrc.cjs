@@ -30,7 +30,8 @@ module.exports = {
       plugins: ['@typescript-eslint'],
       rules: {
         '@typescript-eslint/array-type': ['error', { default: 'generic' }],
-        '@typescript-eslint/consistent-type-imports': ['error', { prefer: 'type-imports' }]
+        '@typescript-eslint/consistent-type-imports': ['error', { prefer: 'type-imports' }],
+        '@typescript-eslint/require-await': ['off']
       }
     }
   ]
