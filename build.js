@@ -10,6 +10,7 @@ rm('./dist', { force: true, recursive: true })
     external: Object.keys(dependencies),
     format: 'esm',
     logLevel: 'info',
+    minify: true,
     outdir: 'dist',
     platform: 'node',
     sourcemap: true,
