@@ -3,12 +3,14 @@ import env from 'fastify-env'
 import sensible from 'fastify-sensible'
 import underPressure from 'under-pressure'
 import { envSchema } from './global'
-import * as routes from './routes'
+import scoreRoute from './routes/score'
 
-const app = createServer({ logger: true })
+const app = createServer({ logger: false })
 
-const registeredRoutes = Object.values(routes).map((routeFunction) => app.register(routeFunction))
-const registeredPlugins = [
+const routes = [
+  app.register(scoreRoute)
+]
+const plugins = [
   app.register(env, {
     dotenv: true,
     schema: envSchema
@@ -22,8 +24,6 @@ const registeredPlugins = [
   })
 ]
 
-await Promise.all([...registeredPlugins, ...registeredRoutes])
-
-app.get('/', async () => 'hello')
+await Promise.all([...plugins, ...routes])
 
 await app.listen(process.env.SERVER_PORT)
