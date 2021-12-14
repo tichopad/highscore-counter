@@ -31,7 +31,9 @@ module.exports = {
       rules: {
         '@typescript-eslint/array-type': ['error', { default: 'generic' }],
         '@typescript-eslint/consistent-type-imports': ['error', { prefer: 'type-imports' }],
-        '@typescript-eslint/require-await': ['off']
+        '@typescript-eslint/indent': ['error', 2],
+        '@typescript-eslint/require-await': ['off'],
+        indent: 'off' // Has issues with TS code
       }
     }
   ]
