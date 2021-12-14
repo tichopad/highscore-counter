@@ -2,13 +2,11 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "Debug with esbuild-node-loader",
+      "name": "Debug with esmo",
       "type": "node",
       "request": "launch",
-      "runtimeExecutable": "node",
-      "runtimeArgs": ["--experimental-loader", "esbuild-node-loader"],
-      "args": ["src/app.ts"],
-      "cwd": "${workspaceRoot}",
+      "runtimeExecutable": "${workspaceRoot}/node_modules/.bin/esmo",
+      "args": ["${workspaceRoot}/src/app.ts"],
       "internalConsoleOptions": "openOnSessionStart",
       "skipFiles": ["<node_internals>/**", "node_modules/**"]
     }
