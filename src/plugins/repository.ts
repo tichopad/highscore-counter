@@ -14,9 +14,8 @@ declare module 'fastify' {
 }
 
 async function repository (app: FastifyInstance, options: FastifyPluginOptions) {
-  const scoreRepository = createScoreRepository()
   const repository: Repository = {
-    score: scoreRepository
+    score: createScoreRepository()
   }
   app.decorate('repository', repository)
 }
