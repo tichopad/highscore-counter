@@ -1,24 +1,12 @@
-import plugin from 'fastify-plugin'
-import type { ScoreEntry, ScorePair } from '../models/score'
-import type { FastifyInstance, FastifyPluginOptions } from 'fastify'
+import type { ScoreEntry, ScorePair } from '../../models/score'
 
-type ScoreRepository = {
+export type ScoreRepository = {
   put: (newScoreEntry: ScoreEntry) => Promise<ScoreEntry>;
   getTotalCountByScorerName: (scorerName: string) => Promise<number>;
   getTotalScoresByGameName: (gameName: string) => Promise<Array<ScorePair>>
 }
 
-type Repository = {
-  score: ScoreRepository
-}
-
-declare module 'fastify' {
-  interface FastifyInstance {
-    repository: Repository
-  }
-}
-
-function createScoreRepository (): ScoreRepository {
+export function createScoreRepository (): ScoreRepository {
   const DB: Array<ScoreEntry> = []
 
   return {
@@ -49,16 +37,3 @@ function createScoreRepository (): ScoreRepository {
     }
   }
 }
-
-async function repository (app: FastifyInstance, options: FastifyPluginOptions) {
-  const scoreRepository = createScoreRepository()
-  const repository: Repository = {
-    score: scoreRepository
-  }
-
-  app.decorate('repository', repository)
-}
-
-export default plugin(repository, {
-  name: 'repository'
-})

@@ -3,7 +3,7 @@ import env from 'fastify-env'
 import sensible from 'fastify-sensible'
 import underPressure from 'under-pressure'
 import { envSchema } from './global'
-import repository from './plugins/repository'
+import repository from './plugins/repository/plugin'
 import gameScoresRoute from './routes/gameScores'
 import scoreRoute from './routes/score'
 
