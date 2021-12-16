@@ -24,7 +24,7 @@ export default async function gameScores (app: FastifyInstance, options: Fastify
       }
     },
     async (request, response) => {
-      return repository.score.getTotalScoresByGameName(request.params.gameName)
+      return repository.score.getScoresByGameName(request.params.gameName)
     }
   )
 }

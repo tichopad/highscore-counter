@@ -7,35 +7,29 @@ const put = (db: Database) => async (newScoreEntry: ScoreEntry): Promise<ScoreEn
   return newScoreEntry
 }
 
-const getTotalCountByScorerName = (db: Database) => async (scorerName: string): Promise<number> => {
-  return db.filter((scoreEntry) => scoreEntry.scorerName === scorerName).length
+const getScoreByPlayerName = (db: Database) => async (playerName: string): Promise<number> => {
+  return db.filter((scoreEntry) => scoreEntry.playerName === playerName).length
 }
 
-const getTotalScoresByGameName = (db: Database) => async (gameName: string): Promise<Array<ScorePair>> => {
-  const totalScoreForEachScorer = db
+const getScoresByGameName = (db: Database) => async (gameName: string): Promise<Array<ScorePair>> => {
+  const scoresIndexedByPlayerNames = db
     .filter((scoreEntry) => scoreEntry.gameName === gameName)
-    .reduce<Record<string, number>>((acc, curr) => {
-    const scorerTotal = acc?.[curr.scorerName] ?? 0
-    return {
-      ...acc,
-      [curr.scorerName]: scorerTotal + 1
-    }
+    .reduce<Record<string, number>>((result, { playerName }) => {
+    const scorerTotal = result?.[playerName] ?? 0
+    return { ...result, [playerName]: scorerTotal + 1 }
   }, {})
-  const totalScoresByScorerSorted = Object.entries(totalScoreForEachScorer)
-    .map(([scorerName, totalScore]): ScorePair => ({
-      scorerName,
-      totalScore
-    }))
-    .sort((a, b) => a.totalScore === b.totalScore ? 0 : a.totalScore > b.totalScore ? -1 : 1)
-  return totalScoresByScorerSorted
+  const sortedScoresForEachPlayer = Object.entries(scoresIndexedByPlayerNames)
+    .map(([playerName, score]): ScorePair => ({ playerName, score }))
+    .sort((a, b) => a.score === b.score ? 0 : a.score > b.score ? -1 : 1)
+  return sortedScoresForEachPlayer
 }
 
 export function createScoreRepository () {
   const db: Database = []
 
   return {
-    getTotalCountByScorerName: getTotalCountByScorerName(db),
-    getTotalScoresByGameName: getTotalScoresByGameName(db),
+    getScoreByPlayerName: getScoreByPlayerName(db),
+    getScoresByGameName: getScoresByGameName(db),
     put: put(db)
   }
 }

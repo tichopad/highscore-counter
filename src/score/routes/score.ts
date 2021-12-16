@@ -4,13 +4,13 @@ import type { ScoreEntry } from '../models'
 import type { Static } from '@sinclair/typebox'
 import type { FastifyInstance, FastifyPluginOptions } from 'fastify'
 
-const PostBodySchema = Type.Omit(ScoreEntrySchema, ['receivedAt'])
+const PostBodySchema = Type.Omit(ScoreEntrySchema, ['receivedTimestamp'])
 type PostBody = Static<typeof PostBodySchema>
 
 const PostReplySchema = Type.Intersect([
   ScoreEntrySchema,
   Type.Object({
-    newTotalScore: Type.Number()
+    score: Type.Number()
   })
 ])
 type PostReply = Static<typeof PostReplySchema>
@@ -29,10 +29,10 @@ export default async function score (app: FastifyInstance, options: FastifyPlugi
       }
     },
     async (request, response) => {
-      const newEntry: ScoreEntry = { ...request.body, receivedAt: Date.now() }
+      const newEntry: ScoreEntry = { ...request.body, receivedTimestamp: Date.now() }
       const savedEntry = await repository.score.put(newEntry)
-      const newTotalScore = await repository.score.getTotalCountByScorerName(savedEntry.scorerName)
-      return { ...savedEntry, newTotalScore }
+      const newScore = await repository.score.getScoreByPlayerName(savedEntry.playerName)
+      return { ...savedEntry, score: newScore }
     }
   )
 }
