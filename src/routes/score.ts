@@ -4,8 +4,8 @@ import type { ScoreEntry } from '../models/score'
 import type { Static } from '@sinclair/typebox'
 import type { FastifyInstance, FastifyPluginOptions } from 'fastify'
 
-const EntryInputSchema = Type.Omit(ScoreEntrySchema, ['receivedAt'])
-type EntryInput = Static<typeof EntryInputSchema>
+const PostBodySchema = Type.Omit(ScoreEntrySchema, ['receivedAt'])
+type PostBody = Static<typeof PostBodySchema>
 
 const PostReplySchema = Type.Intersect([
   ScoreEntrySchema,
@@ -18,11 +18,11 @@ type PostReply = Static<typeof PostReplySchema>
 export default async function score (app: FastifyInstance, options: FastifyPluginOptions) {
   const { repository } = app
 
-  app.post<{ Body: EntryInput, Reply: PostReply }>(
+  app.post<{ Body: PostBody, Reply: PostReply }>(
     '/score',
     {
       schema: {
-        body: EntryInputSchema,
+        body: PostBodySchema,
         response: {
           200: PostReplySchema
         }

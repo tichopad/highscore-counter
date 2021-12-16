@@ -7,5 +7,10 @@ export const ScoreEntrySchema = Type.Object({
   scoredAt: Type.Number(),
   scorerName: Type.String()
 })
-
 export type ScoreEntry = Static<typeof ScoreEntrySchema>
+
+export const ScorePairSchema = Type.Object({
+  scorerName: Type.String(),
+  totalScore: Type.Number()
+})
+export type ScorePair = Static<typeof ScorePairSchema>

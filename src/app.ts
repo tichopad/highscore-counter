@@ -4,6 +4,7 @@ import sensible from 'fastify-sensible'
 import underPressure from 'under-pressure'
 import { envSchema } from './global'
 import repository from './plugins/repository'
+import gameScoresRoute from './routes/gameScores'
 import scoreRoute from './routes/score'
 
 const app = createServer({ logger: false })
@@ -23,7 +24,8 @@ const plugins = [
   app.register(repository)
 ]
 const routes = [
-  app.register(scoreRoute)
+  app.register(scoreRoute),
+  app.register(gameScoresRoute)
 ]
 
 await Promise.all([...plugins, ...routes])
