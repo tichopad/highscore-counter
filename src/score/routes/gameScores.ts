@@ -1,5 +1,5 @@
 import { Type } from '@sinclair/typebox'
-import { ScorePairSchema } from '../models/score'
+import { ScorePairSchema } from '../models'
 import type { Static } from '@sinclair/typebox'
 import type { FastifyInstance, FastifyPluginOptions } from 'fastify'
 

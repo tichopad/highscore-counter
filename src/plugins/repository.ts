@@ -1,6 +1,6 @@
 import plugin from 'fastify-plugin'
-import { createScoreRepository } from './score'
-import type { ScoreRepository } from './score'
+import { createScoreRepository } from '../score/repository'
+import type { ScoreRepository } from '../score/repository'
 import type { FastifyInstance, FastifyPluginOptions } from 'fastify'
 
 type Repository = {

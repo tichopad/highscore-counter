@@ -3,9 +3,9 @@ import env from 'fastify-env'
 import sensible from 'fastify-sensible'
 import underPressure from 'under-pressure'
 import { envSchema } from './global'
-import repository from './plugins/repository/plugin'
-import gameScoresRoute from './routes/gameScores'
-import scoreRoute from './routes/score'
+import repository from './plugins/repository'
+import gameScoresRoute from './score/routes/gameScores'
+import scoreRoute from './score/routes/score'
 
 const app = createServer({ logger: false })
 

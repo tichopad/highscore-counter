@@ -1,4 +1,4 @@
-import type { ScoreEntry, ScorePair } from '../../models/score'
+import type { ScoreEntry, ScorePair } from './models'
 
 export type ScoreRepository = {
   put: (newScoreEntry: ScoreEntry) => Promise<ScoreEntry>;
