@@ -1,5 +1,3 @@
-/* eslint-disable no-unused-vars */
-
 import { Type } from '@sinclair/typebox'
 import type { Static } from '@sinclair/typebox'
 

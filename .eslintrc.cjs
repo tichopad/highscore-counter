@@ -33,7 +33,8 @@ module.exports = {
         '@typescript-eslint/consistent-type-imports': ['error', { prefer: 'type-imports' }],
         '@typescript-eslint/indent': ['error', 2],
         '@typescript-eslint/require-await': ['off'],
-        indent: 'off' // Has issues with TS code
+        indent: 'off', // Has issues with TS code
+        'no-unused-vars': 'off' // Has issues with declarations
       }
     }
   ]

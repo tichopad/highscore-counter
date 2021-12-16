@@ -2795,6 +2795,7 @@ __metadata:
     esno: 0.12.1
     fastify: 3.24.1
     fastify-env: 2.1.1
+    fastify-plugin: ^3.0.0
     fastify-sensible: 3.1.2
     nodemon: 2.0.15
     pm2: ^5.1.2

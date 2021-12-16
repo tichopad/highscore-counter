@@ -3,13 +3,11 @@ import env from 'fastify-env'
 import sensible from 'fastify-sensible'
 import underPressure from 'under-pressure'
 import { envSchema } from './global'
+import repository from './plugins/repository'
 import scoreRoute from './routes/score'
 
 const app = createServer({ logger: false })
 
-const routes = [
-  app.register(scoreRoute)
-]
 const plugins = [
   app.register(env, {
     dotenv: true,
@@ -21,7 +19,11 @@ const plugins = [
     maxHeapUsedBytes: 100000000,
     maxRssBytes: 100000000,
     maxEventLoopUtilization: 0.98
-  })
+  }),
+  app.register(repository)
+]
+const routes = [
+  app.register(scoreRoute)
 ]
 
 await Promise.all([...plugins, ...routes])
