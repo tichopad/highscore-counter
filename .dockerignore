@@ -1,0 +1,9 @@
+.eslintcache
+.eslintrc.cjs
+.env
+.env.example
+.gitignore
+.vscode
+dist
+docker-compose.yml
+node_modules

@@ -30,4 +30,5 @@ const routes = [
 
 await Promise.all([...plugins, ...routes])
 
-await app.listen(process.env.SERVER_PORT)
+const message = await app.listen(process.env.SERVER_PORT, '0.0.0.0')
+console.log(message)

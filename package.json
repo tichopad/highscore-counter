@@ -9,7 +9,7 @@
     "build": "node build.js",
     "lint": "eslint --cache --fix src/**/*.{js,jsx,ts,tsx}",
     "start": "nodemon --watch src -e js,jsx,ts,tsx,json -x \"esmo src/app.ts\"",
-    "start-prod": "pm2 start dist/app.js"
+    "start-prod": "pm2-runtime dist/app.js"
   },
   "dependencies": {
     "@sinclair/typebox": "0.23.1",
