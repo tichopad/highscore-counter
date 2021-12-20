@@ -1,3 +1,7 @@
-http://localhost
+http://localhost {
+  reverse_proxy server:3000
+}
 
-reverse_proxy server:3000
+http://localhost/chinchilla {
+  reverse_proxy adminer:8080
+}
