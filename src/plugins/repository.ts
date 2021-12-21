@@ -1,3 +1,4 @@
+import Prisma from '@prisma/client'
 import plugin from 'fastify-plugin'
 import { createScoreRepository } from '../score/repository'
 import type { ScoreRepository } from '../score/repository'
@@ -14,9 +15,12 @@ declare module 'fastify' {
 }
 
 async function repository (app: FastifyInstance, options: FastifyPluginOptions) {
+  const prisma = new Prisma.PrismaClient()
+
   const repository: Repository = {
-    score: createScoreRepository()
+    score: createScoreRepository(prisma)
   }
+
   app.decorate('repository', repository)
 }
 

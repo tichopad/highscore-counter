@@ -1,15 +1,10 @@
 services:
   server:
     build: .
-    environment:
-      DB_NAME: ${DB_NAME}
-      DB_PASSWORD: ${DB_PASSWORD}
-      DB_USER: ${DB_USER}
-      SERVER_PORT: ${SERVER_PORT}
+    depends_on:
+      - db
   proxy:
     image: caddy:alpine
-    ports:
-      - "80:80"
     volumes:
       - $PWD/Caddyfile:/etc/caddy/Caddyfile
       - caddy_data:/data

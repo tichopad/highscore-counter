@@ -16,10 +16,9 @@ const plugins = [
   }),
   app.register(sensible),
   app.register(underPressure, {
-    maxEventLoopDelay: 1000,
-    maxHeapUsedBytes: 100000000,
-    maxRssBytes: 100000000,
-    maxEventLoopUtilization: 0.98
+    maxEventLoopDelay: 2000,
+    maxEventLoopUtilization: 0.98,
+    maxHeapUsedBytes: 1000_000_000
   }),
   app.register(repository)
 ]

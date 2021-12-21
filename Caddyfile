@@ -1,5 +1,5 @@
 http://localhost {
-  reverse_proxy server:3000
+  reverse_proxy server:{$SERVER_PORT}
 }
 
 http://localhost/chinchilla {

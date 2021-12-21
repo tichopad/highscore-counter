@@ -1,37 +1,29 @@
-import { Type } from '@sinclair/typebox'
-import { ScoreEntrySchema } from '../models'
-import type { ScoreEntry } from '../models'
-import type { Static } from '@sinclair/typebox'
+import { ScoreEntryInputSchema, ScorePairSchema } from '../models'
+import type { ScoreEntryInput, ScorePair } from '../models'
 import type { FastifyInstance, FastifyPluginOptions } from 'fastify'
-
-const PostBodySchema = Type.Omit(ScoreEntrySchema, ['receivedTimestamp'])
-type PostBody = Static<typeof PostBodySchema>
-
-const PostReplySchema = Type.Intersect([
-  ScoreEntrySchema,
-  Type.Object({
-    score: Type.Number()
-  })
-])
-type PostReply = Static<typeof PostReplySchema>
 
 export default async function score (app: FastifyInstance, options: FastifyPluginOptions) {
   const { repository } = app
 
-  app.post<{ Body: PostBody, Reply: PostReply }>(
+  app.post<{ Body: ScoreEntryInput, Reply: ScorePair }>(
     '/score',
     {
       schema: {
-        body: PostBodySchema,
+        body: ScoreEntryInputSchema,
         response: {
-          200: PostReplySchema
+          200: ScorePairSchema
         }
       }
     },
     async (request, response) => {
-      const newEntry: ScoreEntry = { ...request.body, receivedTimestamp: Date.now() }
-      const savedEntry = await repository.score.put(newEntry)
-      const newScore = await repository.score.getScoreByPlayerName(savedEntry.playerName)
+      const savedEntry = await repository.score.put({
+        created: new Date(request.body.created),
+        gameName: request.body.gameName,
+        playerName: request.body.playerName,
+        received: new Date()
+      })
+      const newScore = await repository.score.getGameScoreByPlayerName(savedEntry.gameName, savedEntry.playerName)
+
       return { ...savedEntry, score: newScore }
     }
   )

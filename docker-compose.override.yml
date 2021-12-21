@@ -1,0 +1,13 @@
+services:
+  server:
+    command: yarn start
+    volumes:
+      - $PWD:/usr/src/app
+  proxy:
+    ports:
+      - "3000:80"
+    environment:
+      - SERVER_PORT=${SERVER_PORT}
+  db:
+    ports:
+      - "5432:5432"

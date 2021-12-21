@@ -1,34 +1,29 @@
-import type { ScoreEntry, ScorePair } from './models'
+import type { ScorePair } from './models'
+import type { Prisma, PrismaClient, ScoreEntry } from '@prisma/client'
 
-type Database = Array<ScoreEntry>
+type Database = PrismaClient
 
-const put = (db: Database) => async (newScoreEntry: ScoreEntry): Promise<ScoreEntry> => {
-  db.push(newScoreEntry)
-  return newScoreEntry
+const put = (db: Database) => async (newScoreEntry: Prisma.ScoreEntryCreateInput): Promise<ScoreEntry> => {
+  return db.scoreEntry.create({
+    data: newScoreEntry
+  })
 }
 
-const getScoreByPlayerName = (db: Database) => async (playerName: string): Promise<number> => {
-  return db.filter((scoreEntry) => scoreEntry.playerName === playerName).length
+const getGameScoreByPlayerName = (db: Database) => (gameName: string, playerName: string): Promise<number> => {
+  return db.scoreEntry.count({ where: { gameName, playerName } })
 }
 
 const getScoresByGameName = (db: Database) => async (gameName: string): Promise<Array<ScorePair>> => {
-  const scoresIndexedByPlayerNames = db
-    .filter((scoreEntry) => scoreEntry.gameName === gameName)
-    .reduce<Record<string, number>>((result, { playerName }) => {
-    const scorerTotal = result?.[playerName] ?? 0
-    return { ...result, [playerName]: scorerTotal + 1 }
-  }, {})
-  const sortedScoresForEachPlayer = Object.entries(scoresIndexedByPlayerNames)
-    .map(([playerName, score]): ScorePair => ({ playerName, score }))
-    .sort((a, b) => a.score === b.score ? 0 : a.score > b.score ? -1 : 1)
-  return sortedScoresForEachPlayer
+  const aggregatedScoreEntries = await db.scoreEntry.groupBy({ _count: true, by: ['playerName'], where: { gameName } })
+  return aggregatedScoreEntries.map((aggregateEntry): ScorePair => ({
+    playerName: aggregateEntry.playerName,
+    score: aggregateEntry._count
+  }))
 }
 
-export function createScoreRepository () {
-  const db: Database = []
-
+export function createScoreRepository (db: Database) {
   return {
-    getScoreByPlayerName: getScoreByPlayerName(db),
+    getGameScoreByPlayerName: getGameScoreByPlayerName(db),
     getScoresByGameName: getScoresByGameName(db),
     put: put(db)
   }
