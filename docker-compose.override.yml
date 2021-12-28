@@ -5,7 +5,7 @@ services:
       - $PWD:/usr/src/app
   proxy:
     ports:
-      - "3000:80"
+      - "${SERVER_PORT}:80"
     environment:
       - SERVER_PORT=${SERVER_PORT}
   db:
